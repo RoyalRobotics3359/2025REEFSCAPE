@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -51,7 +52,8 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.configure(Configs.SwerveModule.driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     turnMotor.configure(Configs.SwerveModule.turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    driveMotor.setInverted(position.isDriveReversed());
+    driveMotor.setInverted(position.isReversed());
+    turnMotor.setInverted(position.isReversed());
 
     this.chassisAngularOffset = chassisAngularOffset;
     m_desiredState.angle = new Rotation2d(turnEncoder.getPosition());

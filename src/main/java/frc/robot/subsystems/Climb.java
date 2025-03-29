@@ -16,25 +16,14 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
   /** Creates a new Climb. */
-  
-  private TalonSRX climbMotor1;
 
   private DoubleSolenoid piston1;
-  private DoubleSolenoid piston2;
+  // private DoubleSolenoid piston2;
 
   /** Creates a new Shoulder. */
   public Climb() {
 
     piston1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climb1.getIn(), Constants.Pneumatics.climb1.getOut());
-    piston2 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climb2.getIn(), Constants.Pneumatics.climb2.getOut());
-
-    climbMotor1 = new TalonSRX(Constants.CanID.climbMotor1.getDriveID());
-
-    climbMotor1.configFactoryDefault();
-
-    climbMotor1.setInverted(Constants.CanID.climbMotor2.isDriveReversed());
-
-    climbMotor1.setNeutralMode(NeutralMode.Brake);
 
   }
 
@@ -43,35 +32,21 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void rotateUp() {
-    climbMotor1.set(TalonSRXControlMode.PercentOutput, Constants.Speeds.climb.getSpeed());
-  }
-
-  public void rotateDown() {
-    climbMotor1.set(TalonSRXControlMode.PercentOutput, -1.0 * Constants.Speeds.climb.getSpeed());
-  }
-
-  public void motorStop() {
-    climbMotor1.set(TalonSRXControlMode.PercentOutput, 0.0);
-  }
-
   // Pneumatic code to extend piston out
-  public void extendShoulder() {
+  public void extendPiston() {
     piston1.set(Value.kForward);
-    piston2.set(Value.kForward);
   }
 
   // Pneumatic code to retract piston in 
-  public void retractShoulder() {
+  public void retractPiston() {
     piston1.set(Value.kReverse);
-    piston2.set(Value.kReverse);
 
   }
 
   // Turns solenoid off.
-  public void turnOffShoulder() {
+  public void turnOffPiston() {
     piston1.set(Value.kOff);
-    piston2.set(Value.kOff);
+    // piston2.set(Value.kOff);
   }
 
 }

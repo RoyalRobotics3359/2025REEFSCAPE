@@ -35,19 +35,25 @@ public class Drivetrain extends SubsystemBase {
   private final SwerveModule rightBack = new SwerveModule(
     Constants.CanID.rightBack, Constants.DriveConstants.kBackRightChassisAngularOffset);
 
-  private final ADIS16470_IMU gyro = new ADIS16470_IMU();
+  private final ADIS16470_IMU gyro;
 
-  SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-    Constants.DriveConstants.kDriveKinematics,
-    Rotation2d.fromDegrees(gyro.getAngle(IMUAxis.kZ)),
-    new SwerveModulePosition[] {
-      leftFront.getPosition(),
-      rightFront.getPosition(),
-      leftBack.getPosition(),
-      rightBack.getPosition()
-    });
-  /** Creates a new Drivetrain. */
+  SwerveDriveOdometry odometry;
+
+    /** Creates a new Drivetrain. */
   public Drivetrain() {
+    gyro = new ADIS16470_IMU();
+    gyro.calibrate();
+    odometry = new SwerveDriveOdometry(
+      Constants.DriveConstants.kDriveKinematics,
+      Rotation2d.fromDegrees(gyro.getAngle(IMUAxis.kZ)),
+      new SwerveModulePosition[] {
+        leftFront.getPosition(),
+        rightFront.getPosition(),
+        leftBack.getPosition(),
+        rightBack.getPosition()
+      });
+      
+
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
@@ -100,6 +106,10 @@ public class Drivetrain extends SubsystemBase {
     rightBack.setDesiredState(swerveModuleStates[3]);
 
     // System.out.println("LF: " + leftFront.getTurnPosition() + ", RF: " + rightFront.getTurnPosition() + "LR: " + leftBack.getTurnPosition() + "RR: " + rightBack.getTurnPosition());
+  }
+
+  public void driveRobotRelative(double xSpeed, double ySpeed, double rot) {
+    this.drive(xSpeed, ySpeed, rot, false);
   }
   
 

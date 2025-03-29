@@ -2,24 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.ClimbCommands;
+package frc.robot.commands.AlgaeIntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.AlgaeIntake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Push extends Command {
+public class ScoreBarge extends Command {
 
-  private Climb climb;
-  
-  /** Creates a new Push. */
-  public Push(Climb c) {
+  private AlgaeIntake intake;
 
-    climb = c;
+  /** Creates a new ScoreBarge. */
+  public ScoreBarge(AlgaeIntake i) {
+
+    intake = i;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climb);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -29,13 +28,14 @@ public class Push extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    climb.extendPiston();
+    intake.scoreBarge();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.scoreBarge();
+  }
 
   // Returns true when the command should end.
   @Override

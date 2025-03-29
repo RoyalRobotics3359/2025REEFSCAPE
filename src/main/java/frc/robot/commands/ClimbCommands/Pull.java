@@ -5,12 +5,19 @@
 package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Climb;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Pull extends Command {
+
+  private Climb climb;
   /** Creates a new Pull. */
-  public Pull() {
+  public Pull(Climb c) {
+
+    climb = c;
+
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(climb);
   }
 
   // Called when the command is initially scheduled.
@@ -19,7 +26,9 @@ public class Pull extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    climb.retractPiston();
+  }
 
   // Called once the command ends or is interrupted.
   @Override

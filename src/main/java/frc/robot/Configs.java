@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -28,7 +30,7 @@ public class Configs {
             driveConfig.encoder.positionConversionFactor(driveFactor).velocityConversionFactor(driveFactor / 60.0);
             driveConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1,0.00,0).velocityFF(driveVelocityFeedForward).outputRange(-1.0, 1.0); //FIX PID CONTROLLER
 
-            turnConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20);
+            turnConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(17 /* 20 */);
             turnConfig.absoluteEncoder.inverted(true).positionConversionFactor(turnFactor).velocityConversionFactor(turnFactor / 60.0);
             turnConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.01,0.00,0.00).outputRange(-1.0, 1.0).positionWrappingEnabled(true).positionWrappingInputRange(0, turnFactor); //FIX PID CONTROLLER
         }

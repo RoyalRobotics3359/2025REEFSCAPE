@@ -28,13 +28,14 @@ public class OutakeAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeExtend();
+    // intake.intakeExtend();
     intake.intakeReverse();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.intakeRetract();
     intake.motorStop();
   }
 

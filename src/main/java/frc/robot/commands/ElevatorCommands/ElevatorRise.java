@@ -11,11 +11,13 @@ import frc.robot.subsystems.Elevator;
 public class ElevatorRise extends Command {
 
   private Elevator elevator;
+  private double setpoint;
   
   /** Creates a new ElevatorRise. */
-  public ElevatorRise(Elevator e) {
+  public ElevatorRise(Elevator e, double s) {
 
     elevator = e;
+    setpoint = s;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator);
@@ -28,6 +30,7 @@ public class ElevatorRise extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     elevator.extendLift();
   }
 

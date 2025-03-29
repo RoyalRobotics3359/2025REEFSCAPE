@@ -25,11 +25,10 @@ public final class Constants {
     leftBack(5, 6, false), // FIX ME
     rightFront(1, 2, false), // FIX ME
     rightBack(7, 8, false), // FIX ME
-    elevatorMotor(11, Integer.MAX_VALUE, false), // FIX ME
-    climbMotor1(12, Integer.MAX_VALUE, false), // FIX ME
-    climbMotor2(13, Integer.MAX_VALUE, false), // FIX ME
-    algaeIntakeMotor1(14, Integer.MAX_VALUE, false), // FIX ME
-    alageIntakeMotor2(15, Integer.MAX_VALUE, false); // FIX ME
+    elevatorMotor1(12, Integer.MAX_VALUE, false), // Has to have encoder connected
+    elevatorMotor2(11, Integer.MAX_VALUE, true), // Follower
+    algaeIntakeMotor1(13, Integer.MAX_VALUE, false), // FIX ME
+    alageIntakeMotor2(14, Integer.MAX_VALUE, true); // FIX ME
 
     private int driveID;
     private int turnID;
@@ -45,15 +44,36 @@ public final class Constants {
 
     public int getTurnID() { return turnID; }
 
-    public boolean isDriveReversed() { return isReversed; }
+    public boolean isReversed() { return isReversed; }
+  }
+
+  public enum PID {
+    Elevator(0.0, 0.5, 0.0, 0.0);
+
+    private double k, p, i, d;
+
+    private PID(double k, double p, double i, double d) {
+      this.k = k;
+      this.p = p;
+      this.i = i;
+      this.d = d;
+    }
+
+    public double getK() { return k; }
+
+    public double getP() { return p; }
+
+    public double getI() { return i; }
+
+    public double getD() { return d; }
   }
 
   public enum Pneumatics {
     // The pneumatic IDs will follow the convention of odd numbers for IN-solenoids and even numbers for OUT-solenoids
     
     //FIX ME: Fix the names for the solenoid corresponding to the correct manipulator when finished.
-    algaeIntake(1,2),
-    climb1(3,4),
+    algaeIntake(3,2),
+    climb1(1,0),
     climb2(5,6);
 
     private int in;
@@ -70,8 +90,10 @@ public final class Constants {
 
   public enum Speeds {
     elevatorSpeed(0.60),
-    algaeIntake(0.60),
-    climb(0.60);
+    algaeIntake(0.85),
+    processor(0.60),
+    climb(0.60),
+    barge(1.00);
 
     private double spd;
 
@@ -94,6 +116,21 @@ public final class Constants {
     public static final double kDrivingMotorReduction = (45.0 * 22.0) / (kDrivingMotorPinionTeeth * 15.0);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
+  }
+
+  public static final class ElevatorHeightSetpoints {
+    // Uses encoder values obtained from testing to correspond to heights that permit
+    // the elevator to rise to specific locations without human interference.
+    public static final double GRAVITY_RELEASE = 0.0; // Height = 
+    public static final double FLOOR = 50.0; // Height =
+  //  public static final double STAGE_ONE = 5000.0; // Height =
+    public static final double STAGE_TWO = 8000.0; // Height =
+    public static final double STAGE_THREE = 15000.0; // Height =
+    public static final double BARGE = 17000.0; // Height =
+    public static final double MAX = 17250; // Maximum travel before hardstop
+
+    public static final double MAX_TRAVEL_INCHES = 91;
+    public static final double HEIGHT_OFFSET = 4.0;
   }
 
   // Drivetrain Constants

@@ -41,6 +41,9 @@ public class IntakeAlgae extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (intake.isLimitPressed()) {
+      return true;
+    }
     return false;
   }
 }

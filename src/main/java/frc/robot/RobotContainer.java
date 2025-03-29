@@ -4,14 +4,24 @@
 
 package frc.robot;
 
+import java.io.PushbackInputStream;
+
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.commands.WheelLock;
 import frc.robot.commands.AlgaeIntakeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeIntakeCommands.OutakeAlgae;
+import frc.robot.commands.AlgaeIntakeCommands.ScoreBarge;
+import frc.robot.commands.ClimbCommands.Pull;
+import frc.robot.commands.ClimbCommands.Push;
+import frc.robot.commands.ElevatorCommands.ElevatorDepress;
+import frc.robot.commands.ElevatorCommands.ElevatorRise;
+import frc.robot.commands.ElevatorCommands.SetElevatorStage;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climb;
 
 // import frc.robot.Constants.OperatorConstants;
 // import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +29,7 @@ import frc.robot.subsystems.AlgaeIntake;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,6 +42,8 @@ public class RobotContainer {
   private OperatorConsole console;
   private Drivetrain drive;
   private AlgaeIntake intake;
+  private Climb climb;
+  private Elevator elevator;
 
 //   // The robot's subsystems and commands are defined here...
 //   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -40,11 +53,16 @@ public class RobotContainer {
 //       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer(OperatorConsole oc, Drivetrain d, AlgaeIntake i) {
+  public RobotContainer(OperatorConsole oc, Drivetrain d, AlgaeIntake i, Climb c, Elevator e) {
 
     console = oc;
     drive = d;
     intake = i;
+    climb = c;
+    elevator = e;
+
+    // Add comands to PathPlanner for use in autonomous
+
 
     // Configure the trigger/button bindings
     configureBindings();
@@ -70,8 +88,33 @@ public class RobotContainer {
     // BUTTON MAPPTING EXAMPLE
     // console.m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    console.getGameController().a().whileTrue(new IntakeAlgae(intake));
-    console.getGameController().b().whileTrue(new OutakeAlgae(intake));
+    /* Bind buttons to game controller */
+    console.getGameController().rightTrigger().whileTrue(new IntakeAlgae(intake));
+    console.getGameController().leftTrigger().whileTrue(new OutakeAlgae(intake));
+
+    console.getGameController().a().whileTrue(new ScoreBarge(intake));
+    console.getGameController().b().whileTrue(intake.extendPiston());
+
+    console.getGameController().back().whileTrue(intake.retractPiston());
+    console.getGameController().start().whileTrue(elevator.resetEncoder());
+
+    console.getGameController().rightBumper().whileTrue(new ElevatorRise(elevator, 0));
+    console.getGameController().leftBumper().whileTrue(new ElevatorDepress(elevator));
+
+    console.getGameController().dPadRight().whileTrue(
+      new SetElevatorStage(elevator, intake, Constants.ElevatorHeightSetpoints.STAGE_TWO));
+    console.getGameController().dPadUp().whileTrue(
+      new SetElevatorStage(elevator, intake, Constants.ElevatorHeightSetpoints.STAGE_THREE));
+    console.getGameController().dPadLeft().whileTrue(
+      new SetElevatorStage(elevator, intake, Constants.ElevatorHeightSetpoints.MAX));
+    console.getGameController().dPadDown().whileTrue(
+      new SetElevatorStage(elevator, intake, Constants.ElevatorHeightSetpoints.FLOOR));
+
+    console.getGameController().x().whileTrue(new Push(climb));
+    console.getGameController().y().whileTrue(new Pull(climb));
+    
+    /* Bind buttons on drive controller */
+    console.getDriveController().x().whileTrue(new WheelLock(drive, console));
 
     // console.getDriveController().x().whileTrue(new 
   
