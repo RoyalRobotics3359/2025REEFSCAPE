@@ -4,6 +4,8 @@
 
 package frc.robot.commands.AlgaeIntakeCommands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeIntake;
 
@@ -12,10 +14,14 @@ public class IntakeAlgae extends Command {
 
   private AlgaeIntake intake;
 
+  private Timer timer;
+
   /** Creates a new IntakeAlgae. */
   public IntakeAlgae(AlgaeIntake i) {
 
     intake = i;
+
+    timer = null;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
@@ -41,7 +47,13 @@ public class IntakeAlgae extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (intake.isLimitPressed()) {
+    if (intake.isLimitPressed() && timer == null) {
+      timer = new Timer();
+      timer.start();
+    }
+    if (timer != null && timer.get() >= 0.5) {
+      timer.stop();
+      timer = null;
       return true;
     }
     return false;

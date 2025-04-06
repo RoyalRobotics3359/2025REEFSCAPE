@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     // FIX ME
     // FollowPathCommand.warmupCommand().schedule();
 
-    CommandScheduler.getInstance().setDefaultCommand(drive, new JoystickDrive(drive, console));
+    CommandScheduler.getInstance().setDefaultCommand(drive, new JoystickDrive(drive, elevator, console));
 
 
     // Limelight code for when we are in the pit and need to connect via usb

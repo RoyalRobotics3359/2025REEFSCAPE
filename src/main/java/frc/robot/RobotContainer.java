@@ -30,6 +30,7 @@ import frc.robot.subsystems.Climb;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,7 +45,7 @@ public class RobotContainer {
   private AlgaeIntake intake;
   private Climb climb;
   private Elevator elevator;
-
+public Limelight limelight;
 //   // The robot's subsystems and commands are defined here...
 //   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 

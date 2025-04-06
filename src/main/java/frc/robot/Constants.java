@@ -25,7 +25,7 @@ public final class Constants {
     leftBack(5, 6, false), // FIX ME
     rightFront(1, 2, false), // FIX ME
     rightBack(7, 8, false), // FIX ME
-    elevatorMotor1(12, Integer.MAX_VALUE, false), // Has to have encoder connected
+    elevatorMotor1(12, Integer.MAX_VALUE, true), // Has to have encoder connected
     elevatorMotor2(11, Integer.MAX_VALUE, true), // Follower
     algaeIntakeMotor1(13, Integer.MAX_VALUE, false), // FIX ME
     alageIntakeMotor2(14, Integer.MAX_VALUE, true); // FIX ME
@@ -124,13 +124,13 @@ public final class Constants {
     public static final double GRAVITY_RELEASE = 0.0; // Height = 
     public static final double FLOOR = 50.0; // Height =
   //  public static final double STAGE_ONE = 5000.0; // Height =
-    public static final double STAGE_TWO = 8000.0; // Height =
-    public static final double STAGE_THREE = 15000.0; // Height =
+    public static final double STAGE_TWO = 13000.0; // Height =
+    public static final double STAGE_THREE = 18000.0; // Height =
     public static final double BARGE = 17000.0; // Height =
-    public static final double MAX = 17250; // Maximum travel before hardstop
+    public static final double MAX = 19000; // Maximum travel before hardstop
 
     public static final double MAX_TRAVEL_INCHES = 91;
-    public static final double HEIGHT_OFFSET = 4.0;
+    public static final double HEIGHT_OFFSET = 4.375;
   }
 
   // Drivetrain Constants

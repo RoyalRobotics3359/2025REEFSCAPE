@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +25,8 @@ public class Elevator extends SubsystemBase {
 
     private TalonSRX elevatorMotor1;
     private TalonSRX elevatorMotor2;
+
+    private DigitalInput isElevatorFloor;
 
     /** Creates a new Lift. */
     public Elevator() {
@@ -40,9 +43,11 @@ public class Elevator extends SubsystemBase {
         // The master has to have the encoder.  The follower cannot have the encoder
         elevatorMotor2.follow(elevatorMotor1);
 
-        elevatorMotor1.setSensorPhase(true);
+        elevatorMotor1.setSensorPhase(false);
 
         configPidControl();        
+
+        isElevatorFloor = new DigitalInput(1);
     }
     
     /**
@@ -68,6 +73,11 @@ public class Elevator extends SubsystemBase {
       SmartDashboard.putNumber("Elevator Position", encoderPosition);
       SmartDashboard.putNumber("Elevator 1 Voltage", elevatorMotor1.getMotorOutputVoltage());
       SmartDashboard.putNumber("Elevator 2 Voltage", elevatorMotor2.getMotorOutputVoltage());
+
+      // if isElevatorFloor.get() is true then it will reset the encoder.
+      if (isElevatorFloor.get()) {
+        this.resetEncoder();
+      }
     }
 
     // Gives power to a motor in the decimal for of a percent (EX: 10% = 0.1) ranging from [-1,1].
